@@ -14,7 +14,7 @@ Plug 'mxw/vim-jsx'
 Plug 'vim-scripts/VimClojure'
 
 " Async make. Linting mostly
-Plug 'benekastah/neomake'
+" Plug 'benekastah/neomake'
 
 " Solarized color scheme
 Plug 'altercation/vim-colors-solarized'
@@ -48,6 +48,36 @@ Plug 'SirVer/ultisnips'
 
 " Highlight, Jump and Resolve Conflict
 Plug 'rhysd/conflict-marker.vim'
+
+" Vim flow plugin
+" Plug 'flowtype/vim-flow'
+
+" Vim search plugin
+Plug 'eugen0329/vim-esearch'
+
+" Vim quick comment
+Plug 'tpope/vim-commentary'
+
+" Vim Light status line
+Plug 'itchyny/lightline.vim'
+
+" Vim ALE (Async lint engine)
+Plug 'w0rp/ale'
+
+" Vim git gutter
+Plug 'airblade/vim-gitgutter'
+
+" post install (yarn install | npm install) then load plugin only for editing
+" supported files
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql']}
+
+" Install plugin https://github.com/Chiel92/vim-autoformat
+Plug 'Chiel92/vim-autoformat'
+
+" Vim-carbon plugin
+Plug 'kristijanhusak/vim-carbon-now-sh'
 
 " Add plugins to &runtimepath
 call plug#end()
@@ -106,7 +136,7 @@ set list
 """"""""""""""""""""""""
 
 " Run neomake on every write
-autocmd! BufWritePost * Neomake
+" autocmd! BufWritePost * Neomake
 
 " Auto trim trailing whitespace
 autocmd BufWritePre * %s/\s\+$//e
@@ -118,7 +148,7 @@ let g:neomake_ruby_rubocop_maker_exe = 'bundle exec rubocop'
 let g:jsx_ext_required = 0
 let g:neomake_jsx_enabled_makers = ['eslint']
 
-set background=light
+set background=dark
 colorscheme Solarized
 set term=screen-256color
 
@@ -139,6 +169,14 @@ command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-h
 " Shortcut for Find
 nmap <leader>f :Find<space>
 
+" Carbon now sh
+vnoremap <F5> :CarbonNowSh<CR>
+
+" Enable flow highlighting
+let g:javascript_plugin_flow = 1
+let g:flow#enable = 0
+let g:flow#autoclose = 1
+
 " Trigger configuration (Optional)
 let g:UltiSnipsExpandTrigger="<C-l>"
 
@@ -152,3 +190,29 @@ let g:javascript_conceal_prototype            = "¶"
 let g:javascript_conceal_static               = "•"
 let g:javascript_conceal_super                = "Ω"
 let g:javascript_conceal_arrow_function       = "⇒"
+
+let g:esearch = {
+  \ 'adapter':    'rg',
+  \ 'backend':    'vimproc',
+  \ 'out':        'win',
+  \ 'batch_size': 1000,
+  \ 'use':        ['visual', 'hlsearch', 'last'],
+  \}
+
+let g:prettier#exec_cmd_path = "./node_modules/.bin/prettier"
+
+" Install plugin https://github.com/Chiel92/vim-autoformat
+let g:formatdef_rubocop = "'~/.bin/rubocop-auto-correct-range '.a:firstline.' '.a:lastline.' '.bufname('%')"
+
+" For lightline
+set laststatus=2
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'relativepath', 'modified' ] ],
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'fugitive#head'
+      \ },
+      \ }
