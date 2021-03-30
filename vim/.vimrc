@@ -1,106 +1,9 @@
-" Start loading plugins
-call plug#begin('~/.config/nvim/plugged')
-
-" General Ruby shit
-Plug 'vim-ruby/vim-ruby'
-
-" JavaScript syntax & indentation
-Plug 'pangloss/vim-javascript'
-
-" JavaScript syntax for jsx
-Plug 'mxw/vim-jsx'
-
-" Clojure syntax & indentation
-Plug 'vim-scripts/VimClojure'
-
-" Async make. Linting mostly
-" Plug 'benekastah/neomake'
-
-" Solarized color scheme
-Plug 'altercation/vim-colors-solarized'
-
-" Fuzzy file finder
-Plug 'junegunn/fzf.vim'
-
-" Git integration
-Plug 'tpope/vim-fugitive'
-
-" You Complete Me
-Plug 'Valloric/YouCompleteMe'
-
-" Vim Minimap
-Plug 'severin-lemaignan/vim-minimap'
-
-" Neomake local eslint first
-Plug 'jaawerth/neomake-local-eslint-first'
-
-" Swift Syntax
-Plug 'keith/swift.vim'
-
-" ES2015 code snippets (Optional)
-Plug 'epilande/vim-es2015-snippets'
-"
-" " React code snippets
-Plug 'epilande/vim-react-snippets'
-
-" Ultisnips
-Plug 'SirVer/ultisnips'
-
-" Highlight, Jump and Resolve Conflict
-Plug 'rhysd/conflict-marker.vim'
-
-" Vim flow plugin
-" Plug 'flowtype/vim-flow'
-
-" Vim search plugin
-Plug 'eugen0329/vim-esearch'
-
-" Vim quick comment
-Plug 'tpope/vim-commentary'
-
-" Vim Light status line
-Plug 'itchyny/lightline.vim'
-
-" Vim ALE (Async lint engine)
-Plug 'w0rp/ale'
-
-" Vim git gutter
-Plug 'airblade/vim-gitgutter'
-
-" post install (yarn install | npm install) then load plugin only for editing
-" supported files
-Plug 'prettier/vim-prettier', {
-  \ 'do': 'yarn install',
-  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql']}
-
-" Install plugin https://github.com/Chiel92/vim-autoformat
-Plug 'Chiel92/vim-autoformat'
-
-" Vim-carbon plugin
-Plug 'kristijanhusak/vim-carbon-now-sh'
-
-" Add plugins to &runtimepath
-call plug#end()
-
 " Map leader key to ,
 let mapleader = ","
-
-" Enable swapping background quickly
-" http://tilvim.com/2013/07/31/swapping-bg.html
-map <Leader>bg :let &background = ( &background == "dark"? "light" : "dark")<CR>
 
 " Enable both relative number and number to turn on 'hybrid mode'
 set relativenumber
 set number
-set ruler
-
-augroup CursorLine
-  au!
-  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-  au WinLeave * setlocal nocursorline
-augroup END
-
-set re=1
 
 " Write spaces instead of tabs when hitting <tab>
 set expandtab
@@ -111,108 +14,136 @@ set tabstop=2
 " Use 2 spaces for indentation
 set shiftwidth=2
 
-" Navigate to search results while typing
-set incsearch
-
 " Highlight search results
 set hlsearch
 
-" Disable escape key (use jj instead)
-inoremap <esc> <NOP>
-inoremap <C-\> <NOP>
-inoremap jj <Esc>
+" Map fd in insert mode to esc
+inoremap fd <Esc>
 
-" Clear search highlight
-nmap <leader>l :noh<CR>
-
-" Replace hash rockets with Ruby 1.9-style hashes
-let @h = ":s/:\\([^=,'\"]*\\) =>/\\1:/g\<C-m>"
+" Map fd in terminal mode to return to normal mode
+tnoremap fd <C-\><C-n>
 
 " Show whitespace characters (tabs, trailing spaces)
 set list
 
-""""""""""""""""""""""""
+" Use the system clipbord as the default register
+set clipboard=unnamed
+
+" Allow modified buffers to be hidden (except for netrw buffers)
+" https://github.com/tpope/vim-vinegar/issues/13
+set nohidden
+augroup netrw_buf_hidden_fix
+  autocmd!
+
+  " Set all non-netrw buffers to bufhidden=hide
+  autocmd BufWinEnter *
+    \  if &ft != 'netrw'
+    \|   set bufhidden=hide
+    \| endif
+augroup end
+
+" Fix syntax highlighting for tsx files
+au BufNewFile,BufRead *.tsx setlocal filetype=typescript.tsx
+
+" Set the statusline of terminal buffers to the term title
+autocmd TermOpen * setlocal statusline=%{b:term_title}
+
+" Disable scrolloff because it makes curses-like programs jump around in
+" terminal buffers
+" https://github.com/neovim/neovim/issues/11072
+set scrolloff=0
+
+" Never show tabline
+set showtabline=0
+
+" Clear search highlight
+nmap <leader>l :nohlsearch<CR>
+
+" Always display signcolumn
+set signcolumn=yes
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " PLUGIN CONFIGURATION "
-""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" set prefix for FZF functions
+let g:fzf_command_prefix = 'Fzf'
 
-" Run neomake on every write
-" autocmd! BufWritePost * Neomake
+" Quickly switch tabs with fzf
+if !exists('g:fzf_tabs_mru')
+  let g:fzf_tabs_mru = {}
+endif
+augroup fzf_tabs
+  autocmd!
+  autocmd TabEnter * let g:fzf_tabs_mru[tabpagenr()] = localtime()
+  autocmd TabClosed * silent! call remove(g:fzf_tabs_mru, expand('<afile>'))
+augroup END
 
-" Auto trim trailing whitespace
-autocmd BufWritePre * %s/\s\+$//e
+function! s:fzf_tab_sink(line)
+  let list = matchlist(a:line, '^\[\([0-9]\+\)\]')
+  let tabnr = list[1]
+  execute tabnr . 'tabnext'
+endfunction
 
-" Use 'bundle exec' when running rubocop in neomake
-let g:neomake_ruby_rubocop_maker_exe = 'bundle exec rubocop'
+function! s:sort_tabs_mru(...)
+  let [t1, t2] = map(copy(a:000), 'get(g:fzf_tabs_mru, v:val, v:val)')
+  return t1 - t2
+endfunction
 
-" Enable JSX plugin in .js files
-let g:jsx_ext_required = 0
-let g:neomake_jsx_enabled_makers = ['eslint']
+function! s:fzf_list_tabs(...)
+  let l:tabs = []
+  let l:longest_tab_number_length = 0
+  let l:longest_name_length = 0
 
-set background=dark
-colorscheme Solarized
-set term=screen-256color
+  for t in sort(range(1, tabpagenr('$')), 's:sort_tabs_mru')
+    let tab_number = printf("[%d]", t)
+    let pwd = getcwd(-1, t)
+    let name = fnamemodify(pwd, ':t')
+
+    let l:tab_number_length = len(l:tab_number)
+    if l:tab_number_length > l:longest_tab_number_length
+      let l:longest_tab_number_length = l:tab_number_length
+    endif
+
+    let l:name_length = len(l:name)
+    if l:name_length > l:longest_name_length
+      let l:longest_name_length = l:name_length
+    endif
+
+    let tab = {
+      \ 'tab_number' : tab_number,
+      \ 'directory_path' : fnamemodify(pwd, ':p:~'),
+      \ 'directory_name' : name,
+      \ }
+    call add(l:tabs, tab)
+  endfor
+
+  let lines = []
+  let l:format = "%-" . l:longest_tab_number_length . "S %-" . l:longest_name_length . "S %s"
+  for tab in l:tabs
+    let line = printf(l:format, tab['tab_number'], tab['directory_name'], tab['directory_path'])
+    call add(lines, line)
+  endfor
+
+  return fzf#run({
+  \ 'source': reverse(lines),
+  \ 'sink': function('s:fzf_tab_sink'),
+  \ 'down': '30%',
+  \ 'options': ['--header-lines=1']
+  \})
+endfunction
+
+command! -nargs=0 FzfTabs :call s:fzf_list_tabs()
 
 " Key mappings for fzf plugin
-nmap <leader>t :FZF<CR>
-nmap <leader>bb :Buffers<CR>
+nmap <leader>f :FzfGFiles<CR>
+nmap <leader>tt :FzfFiles<CR>
+nmap <leader>bb :FzfBuffers<CR>
+nmap <leader>c :FzfHistory:<CR>
+nmap <leader>gt :FzfTabs<CR>
 
-" Respect .gitignore in fzf
-let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
-
-" Set location of fzf binary for fzf.vim
-set rtp+=/usr/local/opt/fzf
-
-" Defines Find, which uses ripgreg through fzf
-" https://medium.com/@crashybang/supercharge-vim-with-fzf-and-ripgrep-d4661fc853d2#.5ai5ij9it
-command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
-
-" Shortcut for Find
-nmap <leader>f :Find<space>
-
-" Carbon now sh
-vnoremap <F5> :CarbonNowSh<CR>
-
-" Enable flow highlighting
-let g:javascript_plugin_flow = 1
-let g:flow#enable = 0
-let g:flow#autoclose = 1
-
-" Trigger configuration (Optional)
-let g:UltiSnipsExpandTrigger="<C-l>"
-
-let g:javascript_conceal_function             = "ƒ"
-let g:javascript_conceal_null                 = "ø"
-let g:javascript_conceal_this                 = "@"
-let g:javascript_conceal_return               = "⇚"
-let g:javascript_conceal_undefined            = "¿"
-let g:javascript_conceal_NaN                  = "ℕ"
-let g:javascript_conceal_prototype            = "¶"
-let g:javascript_conceal_static               = "•"
-let g:javascript_conceal_super                = "Ω"
-let g:javascript_conceal_arrow_function       = "⇒"
-
-let g:esearch = {
-  \ 'adapter':    'rg',
-  \ 'backend':    'vimproc',
-  \ 'out':        'win',
-  \ 'batch_size': 1000,
-  \ 'use':        ['visual', 'hlsearch', 'last'],
-  \}
-
-let g:prettier#exec_cmd_path = "./node_modules/.bin/prettier"
-
-" Install plugin https://github.com/Chiel92/vim-autoformat
-let g:formatdef_rubocop = "'~/.bin/rubocop-auto-correct-range '.a:firstline.' '.a:lastline.' '.bufname('%')"
-
-" For lightline
-set laststatus=2
-let g:lightline = {
-      \ 'colorscheme': 'wombat',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'relativepath', 'modified' ] ],
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'fugitive#head'
-      \ },
-      \ }
+" delete buffer but keep window open
+" https://superuser.com/questions/289285/how-to-close-buffer-without-closing-the-window
+command! DeleteBufferSafely :bn|:bd#
+nmap <leader>bd :DeleteBufferSafely<CR>
