@@ -55,3 +55,6 @@
 [submodule "vim/plugins/vim-prettier"]
 	path = vim/plugins/vim-prettier
 	url = https://github.com/prettier/vim-prettier.git
+[submodule "vim/plugins/papercolor-theme"]
+	path = vim/plugins/papercolor-theme
+	url = git@github.com:NLKNguyen/papercolor-theme.git
