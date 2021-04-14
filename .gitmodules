@@ -58,3 +58,6 @@
 [submodule "vim/plugins/papercolor-theme"]
 	path = vim/plugins/papercolor-theme
 	url = git@github.com:NLKNguyen/papercolor-theme.git
+[submodule "vim/plugins/vim-gotham"]
+	path = vim/plugins/vim-gotham
+	url = git@github.com:whatyouhide/vim-gotham.git
