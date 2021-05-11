@@ -62,6 +62,11 @@ nmap <leader>l :nohlsearch<CR>
 " Always display signcolumn
 set signcolumn=yes
 
+" Open git in neovim remote
+if has('nvim')
+  let $GIT_EDITOR = 'nvr -cc split --remote-wait'
+endif
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " PLUGIN CONFIGURATION "
