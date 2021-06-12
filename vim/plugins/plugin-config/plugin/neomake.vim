@@ -3,7 +3,7 @@ autocmd! BufWritePost * Neomake
 
 " Turn on eslint for typescript files
 function! s:typescript_makers()
-  let l:makers = ['tsc']
+  let l:makers = []
   if executable('eslint')
     call add(l:makers, 'eslint')
   endif
@@ -28,6 +28,3 @@ let g:neomake_typescript_eslint_maker = {
         \   '%W%f: line %l\, col %c\, Warning - %m,%-G,%-G%*\d problems%#',
         \ 'output_stream': 'stdout',
         \ }
-
-" Enable hlint for haskell files
-let g:neomake_haskell_enabled_makers = []
