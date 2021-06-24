@@ -64,3 +64,9 @@
 [submodule "vim/plugins/tabnine-vim"]
 	path = vim/plugins/tabnine-vim
 	url = https://github.com/codota/tabnine-vim
+[submodule "vim/plugins/markdown-preview.nvim"]
+	path = vim/plugins/markdown-preview.nvim
+	url = git@github.com:iamcco/markdown-preview.nvim.git
+[submodule "vim/plugins/ale"]
+	path = vim/plugins/ale
+	url = git@github.com:dense-analysis/ale.git
