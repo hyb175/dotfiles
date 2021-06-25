@@ -13,9 +13,6 @@
 [submodule "vim/plugins/groovy.vim"]
 	path = vim/plugins/groovy.vim
 	url = https://github.com/vim-scripts/groovy.vim.git
-[submodule "vim/plugins/neomake"]
-	path = vim/plugins/neomake
-	url = https://github.com/benekastah/neomake.git
 [submodule "vim/plugins/vim-fugitive"]
 	path = vim/plugins/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive.git
