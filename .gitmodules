@@ -67,3 +67,6 @@
 [submodule "vim/plugins/ale"]
 	path = vim/plugins/ale
 	url = git@github.com:dense-analysis/ale.git
+[submodule "vim/plugins/glow.nvim"]
+	path = vim/plugins/glow.nvim
+	url = git@github.com:ellisonleao/glow.nvim.git

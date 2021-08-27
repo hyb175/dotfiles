@@ -1,6 +1,9 @@
 " Map leader key to ,
 let mapleader = ","
 
+" Define ruby host
+let g:ruby_host_prog='~/.asdf/shims/neovim-ruby-host'
+
 " Enable both relative number and number to turn on 'hybrid mode'
 set relativenumber
 set number
@@ -161,3 +164,6 @@ nmap <leader>gt :FzfTabs<CR>
 " https://superuser.com/questions/289285/how-to-close-buffer-without-closing-the-window
 command! DeleteBufferSafely :bn|:bd#
 nmap <leader>bd :DeleteBufferSafely<CR>
+
+" Preview markdown with Glow
+nmap <leader>pm :Glow<CR>
