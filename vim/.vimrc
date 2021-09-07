@@ -159,6 +159,7 @@ nmap <leader>tt :FzfFiles<CR>
 nmap <leader>bb :FzfBuffers<CR>
 nmap <leader>c :FzfHistory:<CR>
 nmap <leader>gt :FzfTabs<CR>
+nmap <leader>g :FzfRg<CR>
 
 " delete buffer but keep window open
 " https://superuser.com/questions/289285/how-to-close-buffer-without-closing-the-window
