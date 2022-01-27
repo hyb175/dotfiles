@@ -73,3 +73,6 @@
 [submodule "vim/plugins/splitjoin.vim"]
 	path = vim/plugins/splitjoin.vim
 	url = git@github.com:AndrewRadev/splitjoin.vim.git
+[submodule "vim/plugins/copilot.vim"]
+	path = vim/plugins/copilot.vim
+	url = git@github.com:github/copilot.vim.git
