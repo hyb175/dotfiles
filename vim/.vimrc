@@ -71,7 +71,7 @@ if has('nvim')
 endif
 
 " Enable code folding
-set foldmethod=indent
+set foldmethod=syntax
 set foldnestmax=10
 set nofoldenable
 set foldlevel=2
@@ -159,7 +159,10 @@ nmap <leader>tt :FzfFiles<CR>
 nmap <leader>bb :FzfBuffers<CR>
 nmap <leader>c :FzfHistory:<CR>
 nmap <leader>gt :FzfTabs<CR>
-nmap <leader>g :FzfRg<CR>
+" Search the project for a specified string
+nmap <leader>g :FzfRg<space>
+" Search the project for the string under the cursor
+nmap <leader>w :FzfRg<space><cword><CR>
 
 " delete buffer but keep window open
 " https://superuser.com/questions/289285/how-to-close-buffer-without-closing-the-window
@@ -168,3 +171,6 @@ nmap <leader>bd :DeleteBufferSafely<CR>
 
 " Preview markdown with Glow
 nmap <leader>pm :Glow<CR>
+
+command! -nargs=0 FormatJSON '%!python -m json.tool'
+nmap <leader>fj :FormatJSON<CR>
