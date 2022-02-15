@@ -76,3 +76,9 @@
 [submodule "vim/plugins/copilot.vim"]
 	path = vim/plugins/copilot.vim
 	url = git@github.com:github/copilot.vim.git
+[submodule "vim/plugins/nvim-tree.lua"]
+	path = vim/plugins/nvim-tree.lua
+	url = git@github.com:kyazdani42/nvim-tree.lua.git
+[submodule "vim/plugins/nvim-web-devicons"]
+	path = vim/plugins/nvim-web-devicons
+	url = git@github.com:kyazdani42/nvim-web-devicons.git
