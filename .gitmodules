@@ -79,3 +79,6 @@
 [submodule "vim/plugins/nvim-web-devicons"]
 	path = vim/plugins/nvim-web-devicons
 	url = git@github.com:kyazdani42/nvim-web-devicons.git
+[submodule "vim/plugins/coc-tabnine"]
+	path = vim/plugins/coc-tabnine
+	url = git@github.com:neoclide/coc-tabnine.git
