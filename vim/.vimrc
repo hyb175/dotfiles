@@ -17,6 +17,9 @@ set tabstop=2
 " Use 2 spaces for indentation
 set shiftwidth=2
 
+" File type indentation
+filetype plugin indent on
+
 " Highlight search results
 set hlsearch
 
@@ -30,7 +33,7 @@ tnoremap fd <C-\><C-n>
 set list
 
 " Use the system clipbord as the default register
-set clipboard=unnamed
+set clipboard=unnamedplus
 
 " Allow modified buffers to be hidden (except for netrw buffers)
 " https://github.com/tpope/vim-vinegar/issues/13

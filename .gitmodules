@@ -82,3 +82,12 @@
 [submodule "vim/plugins/coc-tabnine"]
 	path = vim/plugins/coc-tabnine
 	url = git@github.com:neoclide/coc-tabnine.git
+[submodule "vim/plugins/oceanic-next"]
+	path = vim/plugins/oceanic-next
+	url = git@github.com:mhartington/oceanic-next.git
+[submodule "vim/plugins/yats.vim"]
+	path = vim/plugins/yats.vim
+	url = git@github.com:HerringtonDarkholme/yats.vim.git
+[submodule "vim/plugins/everforest"]
+	path = vim/plugins/everforest
+	url = git@github.com:sainnhe/everforest.git
