@@ -177,3 +177,13 @@ nmap <leader>pm :Glow<CR>
 
 command! -nargs=0 FormatJSON '%!python -m json.tool'
 nmap <leader>fj :FormatJSON<CR>
+
+" Key mappings for NvimTree
+nnoremap <C-n> :NvimTreeToggle<CR>
+nnoremap <leader>r :NvimTreeRefresh<CR>
+nnoremap <leader>n :NvimTreeFindFile<CR>
+
+highlight NvimTreeFolderIcon guibg=blue
+
+" Fix autocomplete enter not working
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"

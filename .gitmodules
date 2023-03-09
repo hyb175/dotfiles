@@ -91,3 +91,12 @@
 [submodule "vim/plugins/everforest"]
 	path = vim/plugins/everforest
 	url = git@github.com:sainnhe/everforest.git
+[submodule "vim/plugins/vim-svelte"]
+	path = vim/plugins/vim-svelte
+	url = git@github.com:evanleck/vim-svelte.git
+[submodule "vim/plugins/html5.vim"]
+	path = vim/plugins/html5.vim
+	url = git@github.com:othree/html5.vim.git
+[submodule "vim/plugins/vim-terraform"]
+	path = vim/plugins/vim-terraform
+	url = git@github.com:hashivim/vim-terraform.git
