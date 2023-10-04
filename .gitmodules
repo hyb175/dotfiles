@@ -100,3 +100,6 @@
 [submodule "vim/plugins/vim-terraform"]
 	path = vim/plugins/vim-terraform
 	url = git@github.com:hashivim/vim-terraform.git
+[submodule "vim/plugins/vim-visual-multi"]
+	path = vim/plugins/vim-visual-multi
+	url = git@github.com:mg979/vim-visual-multi.git
