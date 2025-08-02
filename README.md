@@ -50,3 +50,25 @@ brew install fzf
 /usr/local/opt/fzf/install
 ```
 
+## Tmux
+
+* Clone with submodules (for TPM):
+
+```
+git clone --recursive https://github.com/YOUR_USERNAME/dotfiles.git ~/Projects/dotfiles
+```
+
+Or if already cloned:
+
+```
+git submodule update --init --recursive
+```
+
+* Create symlink:
+
+```
+ln -s $PWD/tmux ~/.config/tmux
+```
+
+* Install plugins - in tmux, press `prefix + I` (default prefix is `Ctrl-b`)
+
