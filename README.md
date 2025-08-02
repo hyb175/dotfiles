@@ -28,6 +28,8 @@ ln -s $PWD/vim/.vimrc ~/.vimrc
 
 LazyVim will automatically bootstrap and install plugins on first launch.
 
+**Note**: The `nvim/lazy-lock.json` file is tracked in git to ensure consistent plugin versions across all machines. This means everyone who uses this configuration will get the exact same plugin versions. To update plugins, use `:Lazy update` in Neovim and commit the updated `lazy-lock.json`.
+
 ## asdf
 
 Follow [official instructions][asdf] to install `asdf`.
