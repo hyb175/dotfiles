@@ -8,19 +8,25 @@ brew install ripgrep
 
 ## Editor
 
-* Install Neovim & copy config
+* Install Neovim:
 
 ```
 brew install neovim
+```
+
+* Link LazyVim configuration:
+
+```
+ln -s $PWD/nvim ~/.config/nvim
+```
+
+* (Optional) Link basic vimrc for vim compatibility:
+
+```
 ln -s $PWD/vim/.vimrc ~/.vimrc
 ```
 
-* Link plugins
-
-```
-mkdir -p ~/.local/share/nvim/site/pack/plugins
-ln -s $PWD/vim/plugins ~/.local/share/nvim/site/pack/plugins/start
-```
+LazyVim will automatically bootstrap and install plugins on first launch.
 
 ## asdf
 
