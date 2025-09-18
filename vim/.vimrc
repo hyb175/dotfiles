@@ -1,189 +1,180 @@
-" Map leader key to ,
+" LazyVim-inspired Vim configuration with comma leader
+" Simple, clean config that works with vanilla Vim
+
+" Set leader key to comma
 let mapleader = ","
 
-" Define ruby host
-let g:ruby_host_prog='~/.asdf/shims/neovim-ruby-host'
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" General Settings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Enable syntax highlighting
+syntax enable
 
-" Enable both relative number and number to turn on 'hybrid mode'
-set relativenumber
-set number
-
-" Write spaces instead of tabs when hitting <tab>
-set expandtab
-
-" Write exactly 2 spaces when hitting <tab>
-set tabstop=2
-
-" Use 2 spaces for indentation
-set shiftwidth=2
-
-" File type indentation
+" File type detection and indentation
 filetype plugin indent on
 
+" Enable mouse support
+set mouse=a
+
+" Line numbers
+set number
+set relativenumber
+
+" Show current command in bottom right
+set showcmd
+
+" Highlight current line
+set cursorline
+
+" Enable 256 colors
+set t_Co=256
+
+" Use system clipboard
+set clipboard=unnamedplus
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Indentation & Tabs
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Use spaces instead of tabs
+set expandtab
+
+" Number of spaces for each tab
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+
+" Smart indentation
+set smartindent
+set autoindent
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Search Settings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Highlight search results
 set hlsearch
 
-" Map fd in insert mode to esc
-inoremap fd <Esc>
+" Incremental search (search as you type)
+set incsearch
 
-" Map fd in terminal mode to return to normal mode
-tnoremap fd <C-\><C-n>
+" Case insensitive search unless uppercase is used
+set ignorecase
+set smartcase
 
-" Show whitespace characters (tabs, trailing spaces)
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Visual Settings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Show whitespace characters
 set list
+set listchars=tab:→\ ,trail:·,extends:»,precedes:«
 
-" Use the system clipbord as the default register
-set clipboard=unnamedplus
-
-" Allow modified buffers to be hidden (except for netrw buffers)
-" https://github.com/tpope/vim-vinegar/issues/13
-set nohidden
-augroup netrw_buf_hidden_fix
-  autocmd!
-
-  " Set all non-netrw buffers to bufhidden=hide
-  autocmd BufWinEnter *
-    \  if &ft != 'netrw'
-    \|   set bufhidden=hide
-    \| endif
-augroup end
-
-" Fix syntax highlighting for tsx files
-au BufNewFile,BufRead *.tsx setlocal filetype=typescript.tsx
-
-" Set the statusline of terminal buffers to the term title
-autocmd TermOpen * setlocal statusline=%{b:term_title}
-
-" Disable scrolloff because it makes curses-like programs jump around in
-" terminal buffers
-" https://github.com/neovim/neovim/issues/11072
-set scrolloff=0
-
-" Never show tabline
-set showtabline=0
-
-" Clear search highlight
-nmap <leader>l :nohlsearch<CR>
-
-" Always display signcolumn
+" Always show sign column
 set signcolumn=yes
 
-" Open git in neovim remote
-if has('nvim')
-  let $GIT_EDITOR = 'nvr -cc split --remote-wait'
+" Show column at 80 characters
+set colorcolumn=80
+
+" Always show status line
+set laststatus=2
+
+" Better status line
+set statusline=%f\ %m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
+
+" Don't show mode in command line (shown in status line)
+set noshowmode
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Window & Buffer Management
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Allow hidden buffers
+set hidden
+
+" Better window splitting
+set splitbelow
+set splitright
+
+" Reduce update time
+set updatetime=300
+
+" Don't pass messages to ins-completion-menu
+set shortmess+=c
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Key Mappings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Clear search highlights
+nnoremap <leader>l :nohlsearch<CR>
+
+" Better escape mapping
+inoremap fd <Esc>
+
+" Window navigation
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" Resize windows with arrow keys
+nnoremap <Up> :resize +2<CR>
+nnoremap <Down> :resize -2<CR>
+nnoremap <Left> :vertical resize -2<CR>
+nnoremap <Right> :vertical resize +2<CR>
+
+" Move lines up/down
+nnoremap <A-j> :m .+1<CR>==
+nnoremap <A-k> :m .-2<CR>==
+inoremap <A-j> <Esc>:m .+1<CR>==gi
+inoremap <A-k> <Esc>:m .-2<CR>==gi
+vnoremap <A-j> :m '>+1<CR>gv=gv
+vnoremap <A-k> :m '<-2<CR>gv=gv
+
+" Better indenting in visual mode
+vnoremap < <gv
+vnoremap > >gv
+
+" Save and quit shortcuts
+nnoremap <leader>w :w<CR>
+nnoremap <leader>q :q<CR>
+nnoremap <leader>x :x<CR>
+
+" Buffer navigation (simple without plugins)
+nnoremap <leader>bp :bprevious<CR>
+nnoremap <leader>bn :bnext<CR>
+nnoremap <leader>bd :bdelete<CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Auto Commands
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Remove trailing whitespace on save
+autocmd BufWritePre * :%s/\s\+$//e
+
+" Return to last edit position when opening files
+autocmd BufReadPost *
+  \ if line("'\"") > 0 && line("'\"") <= line("$") |
+  \   exe "normal! g`\"" |
+  \ endif
+
+" Set proper filetype for common extensions
+autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
+autocmd BufNewFile,BufRead *.jsx set filetype=javascript.jsx
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Performance
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Faster scrolling
+set lazyredraw
+
+" Don't create swap files
+set noswapfile
+
+" Don't create backup files
+set nobackup
+set nowritebackup
+
+" Persistent undo
+if has('persistent_undo')
+  set undofile
+  set undodir=~/.vim/undodir
+  if !isdirectory(&undodir)
+    call mkdir(&undodir, 'p')
+  endif
 endif
-
-" Enable code folding
-set foldmethod=syntax
-set foldnestmax=10
-set nofoldenable
-set foldlevel=2
-
-" Auto remove trailing whitespace
-autocmd FileType ruby,typescript,javascript autocmd BufWritePre <buffer> %s/\s\+$//e
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" PLUGIN CONFIGURATION "
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" set prefix for FZF functions
-let g:fzf_command_prefix = 'Fzf'
-
-" Quickly switch tabs with fzf
-if !exists('g:fzf_tabs_mru')
-  let g:fzf_tabs_mru = {}
-endif
-augroup fzf_tabs
-  autocmd!
-  autocmd TabEnter * let g:fzf_tabs_mru[tabpagenr()] = localtime()
-  autocmd TabClosed * silent! call remove(g:fzf_tabs_mru, expand('<afile>'))
-augroup END
-
-function! s:fzf_tab_sink(line)
-  let list = matchlist(a:line, '^\[\([0-9]\+\)\]')
-  let tabnr = list[1]
-  execute tabnr . 'tabnext'
-endfunction
-
-function! s:sort_tabs_mru(...)
-  let [t1, t2] = map(copy(a:000), 'get(g:fzf_tabs_mru, v:val, v:val)')
-  return t1 - t2
-endfunction
-
-function! s:fzf_list_tabs(...)
-  let l:tabs = []
-  let l:longest_tab_number_length = 0
-  let l:longest_name_length = 0
-
-  for t in sort(range(1, tabpagenr('$')), 's:sort_tabs_mru')
-    let tab_number = printf("[%d]", t)
-    let pwd = getcwd(-1, t)
-    let name = fnamemodify(pwd, ':t')
-
-    let l:tab_number_length = len(l:tab_number)
-    if l:tab_number_length > l:longest_tab_number_length
-      let l:longest_tab_number_length = l:tab_number_length
-    endif
-
-    let l:name_length = len(l:name)
-    if l:name_length > l:longest_name_length
-      let l:longest_name_length = l:name_length
-    endif
-
-    let tab = {
-      \ 'tab_number' : tab_number,
-      \ 'directory_path' : fnamemodify(pwd, ':p:~'),
-      \ 'directory_name' : name,
-      \ }
-    call add(l:tabs, tab)
-  endfor
-
-  let lines = []
-  let l:format = "%-" . l:longest_tab_number_length . "S %-" . l:longest_name_length . "S %s"
-  for tab in l:tabs
-    let line = printf(l:format, tab['tab_number'], tab['directory_name'], tab['directory_path'])
-    call add(lines, line)
-  endfor
-
-  return fzf#run({
-  \ 'source': reverse(lines),
-  \ 'sink': function('s:fzf_tab_sink'),
-  \ 'down': '30%',
-  \ 'options': ['--header-lines=1']
-  \})
-endfunction
-
-command! -nargs=0 FzfTabs :call s:fzf_list_tabs()
-
-" Key mappings for fzf plugin
-nmap <leader>f :FzfGFiles<CR>
-nmap <leader>tt :FzfFiles<CR>
-nmap <leader>bb :FzfBuffers<CR>
-nmap <leader>c :FzfHistory:<CR>
-nmap <leader>gt :FzfTabs<CR>
-" Search the project for a specified string
-nmap <leader>g :FzfRg<space>
-" Search the project for the string under the cursor
-nmap <leader>w :FzfRg<space><cword><CR>
-
-" delete buffer but keep window open
-" https://superuser.com/questions/289285/how-to-close-buffer-without-closing-the-window
-command! DeleteBufferSafely :bn|:bd#
-nmap <leader>bd :DeleteBufferSafely<CR>
-
-" Preview markdown with Glow
-nmap <leader>pm :Glow<CR>
-
-command! -nargs=0 FormatJSON '%!python -m json.tool'
-nmap <leader>fj :FormatJSON<CR>
-
-" Key mappings for NvimTree
-nnoremap <C-n> :NvimTreeToggle<CR>
-nnoremap <leader>r :NvimTreeRefresh<CR>
-nnoremap <leader>n :NvimTreeFindFile<CR>
-
-highlight NvimTreeFolderIcon guibg=blue
-
-" Fix autocomplete enter not working
-inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"

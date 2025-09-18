@@ -1,82 +1,170 @@
-# Environment setup
+# Dotfiles Configuration
 
-## Search
+Modern development environment setup with tmux, neovim (LazyVim), and fish shell.
 
+## Prerequisites
+
+Install Homebrew if not already installed:
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
-brew install ripgrep
+
+## Quick Setup
+
+Clone the repository and set up symlinks:
+
+```bash
+git clone https://github.com/YOUR_USERNAME/dotfiles.git ~/Projects/dotfiles
+cd ~/Projects/dotfiles
+
+# Create symlinks (this will backup your existing configs)
+ln -sf $PWD/tmux ~/.config/tmux
+ln -sf $PWD/nvim ~/.config/nvim  
+ln -sf $PWD/fish ~/.config/fish
 ```
 
-## Editor
+## Shell (Fish)
 
-* Install Neovim:
-
+### Installation
+```bash
+brew install fish
 ```
+
+### Configuration
+The fish configuration includes:
+- **starship** prompt
+- **zoxide** for smart directory jumping
+- **asdf** for version management
+- Custom aliases and PATH setup
+
+### Required tools:
+```bash
+# Starship prompt
+brew install starship
+
+# Zoxide for directory navigation  
+brew install zoxide
+
+# Eza for better ls
+brew install eza
+
+# LazyGit
+brew install lazygit
+```
+
+## Terminal Multiplexer (Tmux)
+
+### Installation
+```bash
+brew install tmux
+```
+
+### Features
+- **Prefix**: `Ctrl-a` (changed from default `Ctrl-b`)
+- **Theme**: Everforest color scheme with tmux2k
+- **Session management**: Integrated with sesh for fast switching
+- **Automatic restore**: Sessions persist across restarts
+- **Status bar**: Minimal, positioned at top
+
+### Key Bindings
+- `prefix + |`: Split horizontally
+- `prefix + -`: Split vertically  
+- `prefix + o`: Open session switcher (sesh)
+- `prefix + r`: Reload config
+- `prefix + h/j/k/l`: Navigate panes (vim-style)
+
+### Plugin Management
+Plugins are managed with TPM. After setup, install plugins:
+```bash
+# In tmux, press prefix + I to install plugins
+```
+
+## Editor (Neovim with LazyVim)
+
+### Installation
+```bash
 brew install neovim
 ```
 
-* Link LazyVim configuration:
+### Features
+- **LazyVim**: Modern Neovim configuration framework
+- **Plugin management**: Lazy.nvim with locked versions
+- **LSP**: Language servers via Mason
+- **AI integration**: Claude Code, Kulala for REST APIs
+- **Database**: vim-dadbod for database management
 
-```
-ln -s $PWD/nvim ~/.config/nvim
-```
+### Plugin Version Management
+The `nvim/lazy-lock.json` file is version controlled to ensure consistent plugin versions across machines. To update:
 
-* (Optional) Link basic vimrc for vim compatibility:
+1. Update plugins: `:Lazy update` 
+2. Commit the updated lazy-lock.json file
 
-```
-ln -s $PWD/vim/.vimrc ~/.vimrc
-```
+## Version Management (asdf)
 
-LazyVim will automatically bootstrap and install plugins on first launch.
+Follow [official instructions](https://asdf-vm.com/#/core-manage-asdf-vm) to install asdf.
 
-**Note**: The `nvim/lazy-lock.json` file is tracked in git to ensure consistent plugin versions across all machines. This means everyone who uses this configuration will get the exact same plugin versions. To update plugins, use `:Lazy update` in Neovim and commit the updated `lazy-lock.json`.
-
-## asdf
-
-Follow [official instructions][asdf] to install `asdf`.
-
-[asdf]: https://asdf-vm.com/#/core-manage-asdf-vm
-
-Then install plugins:
-
-```
+Common plugins:
+```bash
 asdf plugin-add ruby
+asdf plugin-add nodejs  
+asdf plugin-add python
 ```
 
-```
-brew install gpg # dependency of asdf nodejs plugin
-asdf plugin-add nodejs
-```
+## Search and File Tools
 
-Then follow [instructions][asdf-nodejs] for bootstrapping trust with gpg.
+```bash
+# Ripgrep for fast searching
+brew install ripgrep
 
-[asdf-nodejs]: https://github.com/asdf-vm/asdf-nodejs#using-a-dedicated-openpgp-keyring
-
-## File finder
-
-```
+# FZF for fuzzy finding
 brew install fzf
-/usr/local/opt/fzf/install
+
+# File navigation
+brew install zoxide
 ```
 
-## Tmux
+## Homebrew Packages
 
-* Clone with submodules (for TPM):
-
-```
-git clone --recursive https://github.com/YOUR_USERNAME/dotfiles.git ~/Projects/dotfiles
-```
-
-Or if already cloned:
-
-```
-git submodule update --init --recursive
+Install all recommended packages:
+```bash
+brew bundle --file=homebrew/Brewfile
 ```
 
-* Create symlink:
+## Configuration Structure
 
 ```
-ln -s $PWD/tmux ~/.config/tmux
+dotfiles/
+├── fish/           # Fish shell configuration
+│   ├── config.fish
+│   ├── conf.d/     # Configuration snippets
+│   └── functions/  # Custom fish functions
+├── nvim/           # Neovim LazyVim configuration  
+│   ├── init.lua
+│   ├── lazy-lock.json
+│   └── lua/        # Lua configuration files
+├── tmux/           # Tmux configuration
+│   ├── tmux.conf
+│   ├── scripts/    # Custom tmux scripts
+│   └── plugins/    # TPM plugins
+└── homebrew/       # Package definitions
+    └── Brewfile
 ```
 
-* Install plugins - in tmux, press `prefix + I` (default prefix is `Ctrl-b`)
+## Troubleshooting
 
+### Fish shell errors
+If you see OMF-related errors, the legacy Oh My Fish configuration has been removed. Restart your shell.
+
+### Tmux plugins not working
+Make sure TPM is installed:
+```bash
+git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm
+```
+Then press `prefix + I` in tmux.
+
+### Neovim plugins not loading
+LazyVim will automatically install plugins on first launch. If issues persist:
+```bash
+rm -rf ~/.local/share/nvim
+nvim  # Will reinstall everything
+```

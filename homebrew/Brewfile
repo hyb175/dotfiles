@@ -1,86 +1,168 @@
+# Homebrew Bundle file for both macOS and Linux
+# Usage: brew bundle --file=homebrew/Brewfile
+
+# Taps
 tap "hashicorp/tap"
 tap "helix-editor/helix"
 tap "homebrew/bundle"
-tap "homebrew/cask"
-tap "homebrew/cask-fonts"
-tap "homebrew/core"
-tap "homebrew/services"
-tap "osx-cross/arm"
-tap "osx-cross/avr"
-tap "oven-sh/bun"
 tap "puma/puma"
 tap "reviewdog/tap"
+tap "oven-sh/bun"
+
+# macOS-specific taps
+if OS.mac?
+  tap "homebrew/cask"
+  tap "homebrew/cask-fonts"
+  tap "homebrew/services"
+  tap "osx-cross/arm"
+  tap "osx-cross/avr"
+end
+
+# Core Development Tools
+brew "git"
+brew "git-lfs"
+brew "git-recent"
+brew "gh"                    # GitHub CLI
+brew "neovim"
+brew "tmux"
+brew "vim"                   # Fallback editor
+
+# Shell & Terminal
+brew "fish"
+brew "starship"              # Modern prompt
+brew "zoxide"                # Smart directory jumping
+brew "eza"                   # Modern ls replacement (replaces exa)
+brew "bat"                   # Better cat with syntax highlighting
+brew "atuin"                 # Shell history sync
+
+# Search & File Navigation
+brew "ripgrep"               # Fast grep
+brew "fd"                    # Fast find
+brew "fzf"                   # Fuzzy finder
+brew "grep"
+
+# Tmux Session Management
+brew "sesh"                  # Fast tmux session manager
+
+# Development Tools
+brew "asdf"                  # Version management
+brew "lazygit"               # Git UI
+brew "diff-so-fancy"        # Better git diffs
+brew "jq"                    # JSON processor
+brew "httpie"                # HTTP client
+
+# Language Support
+brew "node"
+brew "pnpm"
+brew "python@3.12" if OS.mac?
+brew "python3" if OS.linux?
+brew "ruby-build"
+brew "rbenv"
+brew "zig"
+
+# Database Tools
+brew "mysql@5.7", restart_service: true if OS.mac?
+brew "mysql-client@8.0" if OS.mac?
+brew "mysql-client" if OS.linux?
+brew "postgresql@14", restart_service: true
+brew "redis", restart_service: true
+
+# Infrastructure & DevOps
+brew "awscli"
+brew "tfenv"
+brew "hashicorp/tap/terraform-ls"
+brew "hashicorp/tap/vault"
+
+# Docker - different installation method per OS
+if OS.mac?
+  cask "docker"              # Docker Desktop for macOS
+else
+  brew "docker"              # Docker Engine for Linux
+  brew "docker-compose"      # Separate on Linux
+end
+
+# Build Tools
+brew "cmake"
+brew "coreutils"
+brew "watchman"
+brew "pkg-config"            # Often needed for building
+
+# Linux-specific build tools
+if OS.linux?
+  brew "gcc"
+  brew "make"
+end
+
+# Services
+brew "nginx", restart_service: true
+brew "memcached", restart_service: true
+brew "dnsmasq"
+
+# Additional Developer Tools
+brew "imagemagick"
+brew "gnupg"
+brew "gnutls"
+brew "openssl"
+brew "libfido2"
+brew "krb5"
+brew "passenger" if OS.mac?  # Rails deployment tool
+brew "tmuxinator"
+brew "v8"
+brew "wireshark", link: false if OS.mac?
+brew "wireshark" if OS.linux?
+brew "helix"
+brew "reviewdog/tap/reviewdog"
+
+# Cloud Native Tools
+brew "pack"                  # Cloud Native Buildpacks CLI
+
+# Android Development (if needed)
+# brew "android-sdk"         # Uncomment if needed
+
+# Graphics & Media
 brew "jpeg-xl"
 brew "aom"
-brew "coreutils"
-brew "asdf"
-brew "atuin"
-brew "awscli"
-brew "bat"
-brew "glib"
-brew "python@3.9"
-brew "certbot"
-brew "cmake"
-brew "diff-so-fancy"
-brew "dnsmasq"
-brew "docker", link: false
+brew "openjpeg"
+brew "libheif"
 brew "snappy"
+
+# Networking Libraries
+brew "ldns"
+brew "nghttp2"
+
+# Facebook Libraries (if needed)
+brew "glib"
 brew "folly"
-brew "exa"
 brew "fizz"
 brew "wangle"
 brew "fbthrift"
 brew "fb303"
-brew "fd"
-brew "fish"
-brew "fzf"
-brew "gh"
-brew "openjpeg"
-brew "git"
-brew "git-lfs"
-brew "git-recent"
-brew "gnutls"
-brew "gnupg"
-brew "grep"
-brew "helix"
-brew "httpie"
-brew "libheif"
-brew "imagemagick"
-brew "jq"
-brew "krb5"
-brew "ldns"
-brew "libfido2"
-brew "memcached", restart_service: true
-brew "mysql@5.7", restart_service: true
-brew "neovim"
-brew "neovim-remote"
-brew "nghttp2"
-brew "nginx", restart_service: true
-brew "node"
-brew "passenger"
-brew "pnpm"
-brew "postgresql@14", restart_service: true
-brew "ruby-build"
-brew "rbenv"
-brew "redis", restart_service: true
-brew "ripgrep"
-brew "starship", link: false
-brew "swiftlint"
+
+# Security
+brew "certbot"
+
+# iOS Development (macOS only)
+brew "swiftlint" if OS.mac?
+
+# Task Management
 brew "task"
-brew "tfenv"
-brew "tmux"
-brew "tmuxinator"
-brew "v8"
-brew "watchman"
-brew "wireshark"
-brew "zig"
-brew "anthonyagresta/openssh/openssh@8.7"
-brew "hashicorp/tap/terraform-ls"
-brew "hashicorp/tap/vault"
-brew "reviewdog/tap/reviewdog"
-cask "db-browser-for-sqlite"
-cask "fig"
-cask "flipper"
-cask "font-sauce-code-pro-nerd-font"
-cask "keybase"
-cask "raycast"
+
+# OpenSSH (specific version if needed)
+brew "anthonyagresta/openssh/openssh@8.7" if OS.mac?
+
+# Linux-specific utilities
+if OS.linux?
+  brew "xclip"               # Clipboard support for X11
+  brew "wl-clipboard"        # Clipboard support for Wayland
+end
+
+# macOS Applications (Casks)
+if OS.mac?
+  cask "db-browser-for-sqlite"
+  cask "flipper"
+  cask "font-sauce-code-pro-nerd-font"
+  cask "keybase"
+  cask "raycast"
+  cask "ghostty"             # Modern terminal emulator
+  cask "wezterm"             # Terminal emulator
+end

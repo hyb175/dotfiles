@@ -1,0 +1,8 @@
+# Ignore secrets file containing API keys and sensitive data
+secrets.fish
+
+# Ignore fish history
+fish_history
+
+# Ignore generated files
+fishd.*
