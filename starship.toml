@@ -1,0 +1,152 @@
+# Starship prompt configuration
+# https://starship.rs/config/
+
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# Inserts a blank line between shell prompts
+add_newline = true
+
+# Replace the '❯' symbol in the prompt
+[character]
+success_symbol = '[➜](bold green)'
+error_symbol = '[➜](bold red)'
+
+# Disable the package module, hiding it from the prompt
+[package]
+disabled = true
+
+# Directory configuration
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+style = "bold cyan"
+format = "[$path]($style)[$read_only]($read_only_style) "
+
+# Git configuration
+[git_branch]
+symbol = " "
+style = "bold purple"
+
+[git_status]
+style = "bold red"
+format = '([\[$all_status$ahead_behind\]]($style) )'
+conflicted = "🏳"
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+untracked = "?"
+stashed = "$"
+modified = "!"
+staged = '+'
+renamed = "»"
+deleted = "✘"
+
+[git_state]
+format = '[\($state( $progress_current of $progress_total)\)]($style) '
+
+# Language versions (only show when relevant)
+[nodejs]
+symbol = " "
+format = "[$symbol($version )]($style)"
+detect_extensions = ["js", "mjs", "cjs", "ts", "mts", "cts", "jsx", "tsx"]
+detect_files = ["package.json", ".node-version"]
+detect_folders = ["node_modules"]
+style = "bold green"
+
+[python]
+symbol = " "
+format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+style = "yellow bold"
+
+[rust]
+symbol = " "
+format = "[$symbol($version )]($style)"
+style = "bold red"
+
+[golang]
+symbol = " "
+format = "[$symbol($version )]($style)"
+style = "bold cyan"
+
+[ruby]
+symbol = " "
+format = "[$symbol($version )]($style)"
+style = "bold red"
+
+[java]
+symbol = " "
+format = "[$symbol($version )]($style)"
+style = "red dimmed"
+
+[docker_context]
+symbol = " "
+format = "[$symbol$context]($style) "
+style = "blue bold"
+only_with_files = true
+
+[kubernetes]
+symbol = "☸ "
+format = '[$symbol$context( \($namespace\))]($style) '
+style = "cyan bold"
+disabled = false
+
+# AWS
+[aws]
+symbol = "  "
+format = '[$symbol($profile )(\($region\) )(\[$duration\] )]($style)'
+style = "bold orange"
+
+# Time
+[time]
+disabled = false
+format = '[$time]($style) '
+time_format = "%R" # Hour:Minute Format
+style = "bold dimmed white"
+
+# Command duration
+[cmd_duration]
+min_time = 2_000
+format = "took [$duration](bold yellow)"
+show_milliseconds = false
+
+# Memory usage
+[memory_usage]
+disabled = false
+threshold = 75
+symbol = " "
+format = "$symbol [${ram_pct}]($style) "
+style = "bold dimmed white"
+
+# Battery
+[battery]
+full_symbol = "🔋 "
+charging_symbol = "⚡️ "
+discharging_symbol = "💀 "
+unknown_symbol = "🔌 "
+empty_symbol = "🪫 "
+
+[[battery.display]]
+threshold = 20
+style = "bold red"
+
+# Shell indicator
+[shell]
+fish_indicator = "🐠"
+bash_indicator = "🐚"
+zsh_indicator = "Z"
+disabled = false
+
+# Hostname
+[hostname]
+ssh_only = true
+format = "[$hostname](bold red) "
+disabled = false
+
+# Username
+[username]
+style_user = "white bold"
+style_root = "red bold"
+format = "[$user]($style) "
+disabled = false
+show_always = false
